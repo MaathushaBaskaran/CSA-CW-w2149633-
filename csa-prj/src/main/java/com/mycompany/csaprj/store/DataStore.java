@@ -23,3 +23,4 @@ public class DataStore {
         return sensorReadings.computeIfAbsent(sensorId, k -> new CopyOnWriteArrayList<>());
     }
 }
+
