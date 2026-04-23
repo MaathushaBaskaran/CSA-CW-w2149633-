@@ -28,15 +28,21 @@ public class SensorDataResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addReading(SensorData data) {
-        // Ensure the sensor exists in the system
-        if (!DataStore.getSensors().containsKey(sensorId)) {
+        // 1. Check if sensor exists
+        com.mycompany.csaprj.model.Sensor sensor = DataStore.getSensors().get(sensorId);
+        if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        // Initialize the list if it's the first reading
-        DataStore.getHistoricalData().putIfAbsent(sensorId, new ArrayList<>());
-        
-        // Add the reading
+        // 2. Part 5.3 Logic: Check for MAINTENANCE status
+        if ("MAINTENANCE".equalsIgnoreCase(sensor.getStatus())) {
+            throw new com.mycompany.csaprj.exception.SensorUnavailableException(
+                "Sensor " + sensorId + " is currently in MAINTENANCE mode and cannot accept readings."
+            );
+        }
+
+        // 3. Proceed as normal
+        DataStore.getHistoricalData().putIfAbsent(sensorId, new java.util.ArrayList<>());
         DataStore.getHistoricalData().get(sensorId).add(data);
         
         return Response.status(Response.Status.CREATED).entity(data).build();

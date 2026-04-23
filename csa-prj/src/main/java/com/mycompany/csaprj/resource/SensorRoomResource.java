@@ -13,6 +13,8 @@ public class SensorRoomResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllRooms() {
+        
+
         return Response.ok(DataStore.getRooms().values()).build();
     }
 
