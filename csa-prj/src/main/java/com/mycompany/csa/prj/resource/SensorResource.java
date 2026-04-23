@@ -59,4 +59,10 @@ public class SensorResource {
 
         return Response.status(Response.Status.CREATED).entity(sensor).build();
     }
+    
+    // Add this to SensorResource.java
+@Path("/{sensorId}/data")
+public SensorDataResource getSensorDataResource(@PathParam("sensorId") String sensorId) {
+    return new SensorDataResource(sensorId);
+}
 }
