@@ -62,3 +62,11 @@
 * **Information Leakage:** Stack traces reveal the internal directory structure of the server, the specific versions of libraries/frameworks being used, and the class/method names in the source code.
 * **Vulnerability Mapping:** An attacker can use this metadata to identify specific unpatched vulnerabilities in the server's environment. For example, knowing the exact version of an outdated library allows a hacker to find a known exploit (CVE) for that version.
 * **Logic Exposure:** Stack traces show the exact sequence of operations leading to a crash. This helps attackers understand the application's logical flow and craft "malformed" inputs to bypass security checks or trigger a Denial of Service (DoS) attack.
+
+
+### Part 5.5: API Observability & Filtering
+
+**Question: Why is it advantageous to use JAX-RS filters for logging instead of manual Logger statements?**
+* **Centralization (DRY Principle):** Filters follow the "Don't Repeat Yourself" principle. Instead of writing logging code in every single method of every resource, one filter handles the entire application automatically.
+* **Separation of Concerns:** Business logic should stay focused on processing data. Cross-cutting concerns like logging, security, and performance monitoring are best handled in the infrastructure layer (filters), making the code cleaner and more maintainable.
+* **Consistency:** Using a filter ensures that *every* request is logged, even those that fail or are rejected by the server before reaching the resource method. Manual logging is prone to human error where a developer might forget to log a specific branch of code.
