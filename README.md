@@ -48,10 +48,17 @@
 * **Choice:** **POST** is used for adding new observations.
 * **Justification:** `PUT` is idempotent and intended for replacing a resource at a specific URI. Since each sensor reading is a new entry being added to a growing collection (history), and we are not "replacing" the entire history with every new reading, `POST` is the semantically correct choice. `POST` allows the server to accept the data and append it to the list, whereas `PUT` would imply we are overwriting existing data.
 
-### Part 5: Dependency Validation Discussion
+### Part 5.2: Dependency Validation Discussion
 
 **Question: Why is HTTP 422 more semantically accurate than 404 for missing references in a payload?**
 * **404 Not Found:** This status implies that the URI itself (the endpoint) does not exist.
 * **422 Unprocessable Entity:** This is more accurate because it indicates that the server understands the request and the syntax of the JSON payload is correct, but it cannot process the instructions because of a semantic error—in this case, a broken logical link to a non-existent Room ID. Using 422 helps developers distinguish between "The URL is wrong" (404) and "The data inside your request is logically invalid" (422).
 
 * 
+
+### Part 5.4: Cybersecurity Analysis of Stack Traces
+
+**Question: Explain the risks of exposing internal Java stack traces to external consumers.**
+* **Information Leakage:** Stack traces reveal the internal directory structure of the server, the specific versions of libraries/frameworks being used, and the class/method names in the source code.
+* **Vulnerability Mapping:** An attacker can use this metadata to identify specific unpatched vulnerabilities in the server's environment. For example, knowing the exact version of an outdated library allows a hacker to find a known exploit (CVE) for that version.
+* **Logic Exposure:** Stack traces show the exact sequence of operations leading to a crash. This helps attackers understand the application's logical flow and craft "malformed" inputs to bypass security checks or trigger a Denial of Service (DoS) attack.
