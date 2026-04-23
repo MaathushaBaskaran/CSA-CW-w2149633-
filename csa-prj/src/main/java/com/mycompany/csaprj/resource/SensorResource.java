@@ -36,12 +36,12 @@ public class SensorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerSensor(Sensor sensor) {
         // Business Logic: Verify that the specified roomId exists [cite: 129]
+        // Updated for Part 5.2: Throw custom exception instead of manual Response
         Room room = DataStore.getRooms().get(sensor.getRoomId());
         if (room == null) {
-            // We return 400 Bad Request now; we will upgrade to 422 in Part 5 [cite: 156]
-            return Response.status(Response.Status.BAD_REQUEST)
-                           .entity("{\"error\":\"Cannot register sensor. Linked Room ID does not exist.\"}")
-                           .build();
+            throw new com.mycompany.csaprj.exception.LinkedResourceNotFoundException(
+                "Cannot link sensor to Room ID: " + sensor.getRoomId() + ". Resource does not exist."
+            );
         }
 
         // Prevent duplicate IDs
