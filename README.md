@@ -37,3 +37,13 @@
 **2. Query Parameters vs. Path Parameters for Filtering** 
 * **Resource Identification vs. View Modification:** Path parameters are used to identify a specific resource (e.g., a specific sensor ID), while query parameters (e.g., `?type=CO2`) are used to filter or sort a collection of resources 
 * **Scalability and Flexibility:** The query parameter approach is superior because it allows for multiple, optional filters without creating a complex and rigid URL hierarchy. For example, adding more filters like `?type=CO2&status=ACTIVE` is simple with query parameters, whereas a path-based approach would require defining numerous specific URL patterns.
+
+### Part 4: Sub-Resources & Historical Data
+
+**1. Benefits of Sub-Resources for Hierarchical Data**
+* **Logical Hierarchy:** Using the sub-resource pattern (`/sensors/{id}/data`) creates a natural URL hierarchy that reflects the real-world relationship where data points belong to a specific parent sensor. This makes the API intuitive for developers to navigate.
+* **Granular Control:** By isolating the historical data into its own resource class (`SensorDataResource`), we follow the Single Responsibility Principle. The main `SensorResource` stays "clean" by only handling sensor metadata (ID, type, room), while the sub-resource handles the potentially massive volume of time-series readings.
+
+**2. Method Selection: PUT vs. POST for New Observations**
+* **Choice:** **POST** is used for adding new observations.
+* **Justification:** `PUT` is idempotent and intended for replacing a resource at a specific URI. Since each sensor reading is a new entry being added to a growing collection (history), and we are not "replacing" the entire history with every new reading, `POST` is the semantically correct choice. `POST` allows the server to accept the data and append it to the list, whereas `PUT` would imply we are overwriting existing data.
