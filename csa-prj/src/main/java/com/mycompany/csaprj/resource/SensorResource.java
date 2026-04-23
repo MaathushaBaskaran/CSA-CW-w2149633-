@@ -1,4 +1,4 @@
-package com.mycompany.csa.prj.resource;
+package com.mycompany.csaprj.resource;
 
 import com.mycompany.csaprj.model.Room;
 import com.mycompany.csaprj.model.Sensor;

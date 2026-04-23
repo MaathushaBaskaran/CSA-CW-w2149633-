@@ -1,4 +1,4 @@
-package com.mycompany.csa.prj.resource;
+package com.mycompany.csaprj.resource;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
