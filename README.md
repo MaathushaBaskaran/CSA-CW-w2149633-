@@ -26,3 +26,14 @@
 **2. Is the DELETE Operation Idempotent?**
 * **Yes, it is idempotent.** An HTTP method is idempotent if executing it multiple times leaves the server in the exact same state as executing it once. 
 * **Justification:** If a client mistakenly sends the exact same `DELETE /api/v1/rooms/LIB-301` request multiple times, the first request will successfully remove the room and return a `204 No Content`. Subsequent identical requests will search the DataStore, fail to find `LIB-301`, and return a `404 Not Found`. Despite the different status codes returned to the client, the ultimate state of the server remains unchanged (the room is successfully deleted and does not exist), preserving the idempotent nature of the `DELETE` method.
+
+
+### Part 3: Sensor Operations & Linking
+
+**1. Technical Consequences of @Consumes(MediaType.APPLICATION_JSON)** 
+* **Constraint Enforcement:** This annotation explicitly tells the JAX-RS runtime that the method only accepts incoming request bodies in JSON format.
+* **Automatic Error Handling:** If a client attempts to send data as `text/plain` or `application/xml`, JAX-RS will automatically reject the request with an **HTTP 415 Unsupported Media Type** error . This prevents the application logic from having to manually parse or validate incompatible data formats
+
+**2. Query Parameters vs. Path Parameters for Filtering** 
+* **Resource Identification vs. View Modification:** Path parameters are used to identify a specific resource (e.g., a specific sensor ID), while query parameters (e.g., `?type=CO2`) are used to filter or sort a collection of resources 
+* **Scalability and Flexibility:** The query parameter approach is superior because it allows for multiple, optional filters without creating a complex and rigid URL hierarchy. For example, adding more filters like `?type=CO2&status=ACTIVE` is simple with query parameters, whereas a path-based approach would require defining numerous specific URL patterns.
