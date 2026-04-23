@@ -51,23 +51,20 @@ public class SensorRoomResource {
         return Response.status(Response.Status.CREATED).entity(room).build();
     }
 
-    // DELETE /api/v1/rooms/{roomId}: Allow room decommissioning with safety constraint [cite: 121-122]
     @DELETE
     @Path("/{roomId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteRoom(@PathParam("roomId") String roomId) {
         Room room = DataStore.getRooms().get(roomId);
         if (room == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                           .entity("{\"error\":\"Room not found\"}")
-                           .build();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
         
-        // Safety constraint: block deletion if sensors are assigned [cite: 122-123]
+        // Use our new custom exception for Part 5.1
         if (!room.getSensorIds().isEmpty()) {
-            return Response.status(Response.Status.CONFLICT)
-                           .entity("{\"error\":\"Cannot delete room. Active sensors are still assigned to it.\"}")
-                           .build();
+            throw new com.mycompany.csaprj.exception.RoomNotEmptyException(
+                "This room is currently occupied by active hardware and cannot be deleted."
+            );
         }
 
         DataStore.getRooms().remove(roomId);
