@@ -1,3 +1,57 @@
+# Smart Campus Sensor Management API
+**Name:** Maathusha Baskaran  
+**Student ID:** w2149633  
+**Coursework:** Advanced Server-side Web Development (CSA)
+
+---
+
+## 1. API Design Overview
+This project implements a RESTful API for managing a "Smart Campus" environment. The design is centered around two primary resources: **Rooms** and **Sensors**. 
+
+### Key Architectural Features:
+* **Resource Hierarchy:** I implemented a sub-resource pattern where historical sensor readings are accessed via `/sensors/{id}/data`. This logically links time-series data to specific hardware.
+* **Data Integrity:** The API enforces strict relationships. For example, a sensor cannot be registered to a non-existent room, and a room cannot be deleted if it contains active sensors.
+* **Professional Error Handling:** Instead of default server errors, the API uses custom Exception Mappers to return structured JSON error messages (409, 422, 403, 500), ensuring a "leak-proof" security model where no Java stack traces are exposed.
+* **Observability:** A global JAX-RS filter logs all incoming requests and outgoing responses to the server console for debugging and monitoring.
+
+---
+
+## 2. Build & Launch Instructions
+
+Follow these steps to get the server running on your local machine:
+
+### Prerequisites:
+* **Java JDK 17** or higher.
+* **Apache NetBeans IDE** (Recommended).
+* **GlassFish Server 7.x** (Configured within NetBeans).
+
+### Steps to Run:
+1. **Clone/Open Project:** Open the project folder in NetBeans. Ensure it is recognized as a **Maven** project.
+2. **Clean and Build:** Right-click the project name in the 'Projects' tab and select **Clean and Build**. This will download the necessary Jakarta EE 10 dependencies.
+3. **Start GlassFish:** Go to the 'Services' tab, expand 'Servers', right-click GlassFish, and select **Start**.
+4. **Deploy:** Right-click the project and select **Run**. NetBeans will build the WAR file and deploy it to GlassFish.
+5. **Access API:** Once the console says "Successfully deployed," the API will be available at:  
+   `http://localhost:8080/csa-prj/api/v1/`
+
+---
+
+## 3. Sample CURL Commands
+You can test the API using these commands in your terminal or command prompt:
+
+**1. Create a New Room**
+```bash
+curl -X POST http://localhost:8080/csa-prj/api/v1/rooms \
+-H "Content-Type: application/json" \
+-d '{"id": "LAB-1", "name": "IOT Lab", "capacity": 25}'
+curl -X POST http://localhost:8080/csa-prj/api/v1/sensors \
+-H "Content-Type: application/json" \
+-d '{"id": "SNS-01", "type": "Temperature", "status": "ACTIVE", "roomId": "LAB-1"}'
+curl -X GET http://localhost:8080/csa-prj/api/v1/rooms
+curl -X POST http://localhost:8080/csa-prj/api/v1/sensors/SNS-01/data \
+-H "Content-Type: application/json" \
+-d '{"value": 22.5}'
+curl -X DELETE http://localhost:8080/csa-prj/api/v1/rooms/LAB-1
+
 # Smart Campus Sensor & Room Management API
 
 *A JAX-RS RESTful Web Service for campus infrastructure management.*
