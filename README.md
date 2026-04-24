@@ -57,6 +57,7 @@ curl -X DELETE http://localhost:8080/csa-prj/api/v1/rooms/LAB-1
 *A JAX-RS RESTful Web Service for campus infrastructure management.*
 
 ---
+```
 
 ## Coursework Report: Conceptual Questions
 
