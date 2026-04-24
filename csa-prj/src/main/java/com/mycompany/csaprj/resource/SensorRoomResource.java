@@ -72,4 +72,17 @@ public class SensorRoomResource {
         DataStore.getRooms().remove(roomId);
         return Response.noContent().build(); 
     }
+    
+    // --------------------------------------------------------
+    // DEDICATED ENDPOINT FOR VIDEO DEMONSTRATION (Part 5.4)
+    // --------------------------------------------------------
+    @GET
+    @Path("/crash")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response triggerSafetyNetForDemo() {
+        // This intentionally throws an unhandled exception to prove 
+        // the GlobalExceptionMapper catches it and returns a clean 500.
+        throw new RuntimeException("Simulated crash for Video Demo");
+    }
+    
 }
