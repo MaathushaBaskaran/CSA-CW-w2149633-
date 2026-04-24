@@ -14,7 +14,7 @@ public class DiscoveryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApiMetadata() {
-        // Creating a map to hold our API metadata as requested in the brief
+        // Creating a map to hold our API metadata 
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("api_version", "v1");
         metadata.put("admin_contact", "admin@smartcampus.ac.uk");

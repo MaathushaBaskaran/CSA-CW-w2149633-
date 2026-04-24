@@ -35,7 +35,7 @@ public class SensorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerSensor(Sensor sensor) {
-        // Business Logic: Verify that the specified roomId exists [cite: 129]
+        // Business Logic: Verify that the specified roomId exists
         // Updated for Part 5.2: Throw custom exception instead of manual Response
         Room room = DataStore.getRooms().get(sensor.getRoomId());
         if (room == null) {
@@ -54,7 +54,7 @@ public class SensorResource {
         // Save sensor to the store
         DataStore.getSensors().put(sensor.getId(), sensor);
 
-        // Update the Room's internal list to ensure data integrity [cite: 58-59]
+        // Update the Room's internal list to ensure data integrity
         room.getSensorIds().add(sensor.getId());
 
         return Response.status(Response.Status.CREATED).entity(sensor).build();

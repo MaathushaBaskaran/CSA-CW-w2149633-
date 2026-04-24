@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/rooms")
 public class SensorRoomResource {
 
-    // GET /api/v1/rooms: Provide a comprehensive list of all rooms [cite: 115]
+    // GET /api/v1/rooms: Provide a comprehensive list of all rooms
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllRooms() {
@@ -18,7 +18,7 @@ public class SensorRoomResource {
         return Response.ok(DataStore.getRooms().values()).build();
     }
 
-    // GET /api/v1/rooms/{roomId}: Fetch detailed metadata for a specific room [cite: 117]
+    // GET /api/v1/rooms/{roomId}: Fetch detailed metadata for a specific room
     @GET
     @Path("/{roomId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -32,7 +32,7 @@ public class SensorRoomResource {
         return Response.ok(room).build();
     }
 
-    // POST /api/v1/rooms: Enable the creation of new rooms [cite: 116]
+    // POST /api/v1/rooms: Enable the creation of new rooms
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
